@@ -1,0 +1,33 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Install OpenJDK
+  apt:
+    name: openjdk-17-jdk
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Add Jenkins repository key
+  apt_key:
+    url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+    state: present
+  become: yes
+
+- name: add Jenkins repository
+  apt_repository:
+    repo: "deb https://pkg.jenkins.io/debian-stable binary/"
+    state: present
+    filename: jenkins
+    update_cache: yes
+  become: yes
+
+- name: Install Jenkins
+  apt:
+    name: jenkins
+    state: present
+  tags: jenkins
+  become: yes
